@@ -49,9 +49,20 @@ for line in $(plugin_read_list PUSH) ; do
   if [[ ${#tokens[@]} -eq 1 ]] ; then
     echo "~~~ :docker: Pushing images for ${service_name}" >&2;
     retry "$push_retries" run_docker_compose push "${service_name}"
+  # push: "service-name:repo"
+  elif [[ ${#tokens[@]} -eq 2 ]] ; then
+    target_image="$(IFS=:; echo "${tokens[*]:1}")"
+    image_tag="$(buildkite-agent meta-data get "release-stream")$(buildkite-agent meta-data get "release-version")"
+    if [[ -n "$image_tag " ]]; then
+      target_image="$target_image:$image_tag"
+    fi
+    echo "~~~ :docker: Pushing image ${target_image}" >&2;
+    plugin_prompt_and_run docker tag "$service_image" "$target_image"
+    retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
   # push: "service-name:repo:tag"
   else
     target_image="$(IFS=:; echo "${tokens[*]:1}")"
+    target_image="$target_image"
     echo "~~~ :docker: Pushing image $target_image" >&2;
     plugin_prompt_and_run docker tag "$service_image" "$target_image"
     retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
