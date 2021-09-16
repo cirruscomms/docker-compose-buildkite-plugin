@@ -7,6 +7,9 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) that lets you 
 * Supports pre-building of images, allowing for fast parallel builds across distributed agents
 * Supports pushing tagged images to a repository
 
+NOTES:
+ - Local fork will push images to a remote repository using a tag constructed from the meta-data variables `release-stream` and `release-version` if a tag is not specified in the push command.
+
 ## Example
 
 The following pipeline will run `test.sh` inside a `app` service container using Docker Compose, the equivalent to running `docker-compose run app test.sh`:
