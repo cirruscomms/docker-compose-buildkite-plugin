@@ -8,7 +8,7 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) that lets you 
 * Supports pushing tagged images to a repository
 
 NOTES:
- - Local fork will push images to a remote repository using a tag constructed from the meta-data variables `release-stream` and `release-version` if a tag is not specified in the push command.
+ - Local fork will push images to a remote repository using the tag associated with the commit that the current build is based on if a tag is not specified in the push command.
 
 ## Example
 
