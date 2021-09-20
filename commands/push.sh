@@ -61,8 +61,8 @@ for line in $(plugin_read_list PUSH) ; do
   # push: "service-name:repo"
   elif [[ ${#tokens[@]} -eq 2 ]] ; then
     target_image="$(IFS=:; echo "${tokens[*]:1}")"
-    image_tag="$(buildkite-agent meta-data get "release-stream")$(buildkite-agent meta-data get "release-version")"
-    if [[ -n "$image_tag " ]]; then
+    image_tag="${BUILDKITE_TAG}"
+    if [[ -n "$image_tag" ]] ; then
       target_image="$target_image:$image_tag"
     fi
     echo "~~~ :docker: Pushing image ${target_image}" >&2;
