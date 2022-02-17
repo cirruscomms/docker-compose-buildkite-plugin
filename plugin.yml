@@ -54,6 +54,8 @@ configuration:
       type: boolean
     no-cache:
       type: boolean
+    build-plain-progress:
+      type: boolean
     use-aliases:
       type: boolean
     tty:

@@ -83,6 +83,10 @@ if [[ "$(plugin_read_config BUILD_PARALLEL "false")" == "true" ]] ; then
   build_params+=(--parallel)
 fi
 
+if [[ "$(plugin_read_config BUILD_PLAIN_PROGRESS "true")" == "true" ]] ; then
+  build_params+=("--progress plain")
+fi
+
 while read -r arg ; do
   [[ -n "${arg:-}" ]] && build_params+=("--build-arg" "${arg}")
 done <<< "$(plugin_read_list ARGS)"
