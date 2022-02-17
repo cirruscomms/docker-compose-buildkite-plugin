@@ -84,7 +84,7 @@ if [[ "$(plugin_read_config BUILD_PARALLEL "false")" == "true" ]] ; then
 fi
 
 if [[ "$(plugin_read_config BUILD_PLAIN_PROGRESS "true")" == "true" ]] ; then
-  build_params+=("--progress plain")
+  build_params+=(--progress plain)
 fi
 
 while read -r arg ; do
