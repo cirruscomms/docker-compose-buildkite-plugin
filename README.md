@@ -9,6 +9,7 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) that lets you 
 
 NOTES:
  - Local fork will push images to a remote repository using the tag associated with the commit that the current build is based on if a tag is not specified in the push command.
+ - There is a `build-plain-progress` option now to set the build output to "plain".
 
 ## Example
 
@@ -425,6 +426,12 @@ The default is `false`.
 Build with `--parallel`, causing Docker Compose to run builds in parallel. Requires docker-compose `1.23+`.
 
 The default is `false`.
+
+### `build-plain-progress` (optional, build only)
+
+Build with `--progress plain, causing Docker Compose to run builds with a plain progres output.`
+
+The default is `true`.
 
 ### `tty` (optional, run only)
 
