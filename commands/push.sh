@@ -59,12 +59,26 @@ for line in $(plugin_read_list PUSH) ; do
     echo "~~~ :docker: Pushing image ${target_image}" >&2;
     plugin_prompt_and_run docker tag "$service_image" "$target_image"
     retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
-  # push: "service-name:repo:tag"
   else
-    target_image="$(IFS=:; echo "${tokens[*]:1}")"
-    target_image="$target_image"
-    echo "~~~ :docker: Pushing image $target_image" >&2;
-    plugin_prompt_and_run docker tag "$service_image" "$target_image"
-    retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
+    IFS='/' read -r -a registry_path <<< "${tokens[2]}"
+    port_number=${registry_path[0]}
+    # push: "service-name:repo:port/path"
+    if [[ "${port_number}" -eq "${port_number}" ]] 2>/dev/null; then
+      target_image="$(IFS=:; echo "${tokens[*]:1}")"
+      image_tag="${BUILDKITE_TAG}"
+      if [[ -n "$image_tag" ]] ; then
+        target_image="$target_image:$image_tag"
+      fi
+      echo "~~~ :docker: Pushing image ${target_image}" >&2;
+      plugin_prompt_and_run docker tag "$service_image" "$target_image"
+      retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
+    # push: "service-name:repo:tag"
+    else
+      target_image="$(IFS=:; echo "${tokens[*]:1}")"
+      target_image="$target_image"
+      echo "~~~ :docker: Pushing image $target_image" >&2;
+      plugin_prompt_and_run docker tag "$service_image" "$target_image"
+      retry "$push_retries" plugin_prompt_and_run docker push "$target_image"
+    fi
   fi
 done
