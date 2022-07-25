@@ -91,6 +91,10 @@ while read -r arg ; do
   [[ -n "${arg:-}" ]] && build_params+=("--build-arg" "${arg}")
 done <<< "$(plugin_read_list ARGS)"
 
+while read -r env_arg ; do
+  [[ -n "${env_arg:-}" ]] && build_params+=("--build-arg" "${env_arg}=${!env_arg}")
+done <<< "$(plugin_read_list ENV_ARGS)"
+
 echo "+++ :docker: Building services ${services[*]}"
 run_docker_compose -f "$override_file" build "${build_params[@]}" "${services[@]}"
 
