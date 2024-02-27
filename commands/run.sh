@@ -238,7 +238,7 @@ if [[ ! "${BUILDKITE_PLUGIN_DOCKER_COMPOSE_MOUNT_SSH_AGENT:-false}" = 'false' ]]
   run_params+=(
     "-e" "SSH_AUTH_SOCK=/ssh-agent"
     "-v" "${SSH_AUTH_SOCK}:/ssh-agent"
-    "-v" "${HOME}/.ssh/known_hosts:${MOUNT_PATH}/.ssh/known_hosts"
+    "-v" "${MOUNT_PATH}/.ssh/known_hosts:${HOME}/.ssh/known_hosts"
   )
 fi
 
